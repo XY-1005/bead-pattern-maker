@@ -479,3 +479,11 @@ function getCellFromMouseEvent(event) {
 
   if (
     cellX < 0 ||
+
+  function fileInput.addEventListener("change", (e) => {
+  handleFile(e.target.files[0]);
+});
+
+generateBtn.addEventListener("click", () => {
+  generatePattern();
+});
