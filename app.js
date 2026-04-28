@@ -185,7 +185,6 @@ async function handleFile(file) {
 
     fitImageToCanvas(uploadedImage, previewCanvas, previewCtx);
 
-    previewCanvas.style.display = "block";
     emptyPreview.classList.add("hidden");
     generateBtn.disabled = false;
     actionPanel.classList.add("hidden");
