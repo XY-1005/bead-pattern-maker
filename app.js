@@ -481,7 +481,8 @@ function getCellFromMouseEvent(event) {
     cellX < 0 ||
 
   function fileInput.addEventListener("change", (e) => {
-  handleFile(e.target.files[0]);
+    console.log("file changed");
+    handleFile(e.target.files[0]);
 });
 
 generateBtn.addEventListener("click", () => {
