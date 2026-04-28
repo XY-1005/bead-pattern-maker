@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Bead Pattern Maker | 拼豆图纸生成器</title>
+
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script src="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js)"></script>
+  <script src="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js)"></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <div class="brand">
+        <div class="brand-logo">B</div>
+        <div>
+          <h1>Bead Pattern Maker</h1>
+          <p>Upload image, generate pixel bead pattern.</p>
+        </div>
+      </div>
+
+      <a class="github-link" href="[github.com](https://github.com/)" target="_blank" rel="noreferrer">
+        GitHub
+      </a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-content">
+        <span class="badge">PNG · JPG · PDF</span>
+        <h2>把图片一键变成拼豆图纸</h2>
+        <p>
+          上传图片，选择尺寸，自动生成带网格、色号、数量统计的拼豆图纸。
+          支持在线查看、翻转、缩放，以及导出 PNG / PDF。
+        </p>
+      </div>
+
+      <div class="hero-card">
+        <div class="mini-grid" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel upload-panel">
+      <div class="panel-title">
+        <h3>1. 上传图片</h3>
+        <p>支持 PNG、JPG、PDF。PDF 默认读取第一页。</p>
+      </div>
+
+      <label class="drop-zone" id="dropZone">
+        <input id="fileInput" type="file" accept="image/png,image/jpeg,application/pdf" />
+        <div class="upload-icon">↑</div>
+        <strong>点击或拖拽文件到这里</strong>
+        <span>PNG / JPG / PDF</span>
+      </label>
+
+      <div id="fileInfo" class="file-info hidden"></div>
+    </section>
+
+    <section class="workspace">
+      <section class="panel preview-panel">
+        <div class="panel-title">
+          <h3>2. 预览图</h3>
+          <p>上传后会在这里显示原图预览。</p>
+        </div>
+
+        <div class="preview-box">
+          <canvas id="previewCanvas"></canvas>
+          <div id="emptyPreview" class="empty-state">
+            <div>🖼️</div>
+            <p>等待上传图片</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel settings-panel">
+        <div class="panel-title">
+          <h3>3. 选择图纸大小</h3>
+          <p>尺寸越大，细节越丰富，需要的拼豆越多。</p>
+        </div>
+
+        <div class="size-options">
+          <label>
+            <input type="radio" name="patternSize" value="32" checked />
+            <span>32 × 32</span>
+          </label>
+
+          <label>
+            <input type="radio" name="patternSize" value="64" />
+            <span>64 × 64</span>
+          </label>
+
+          <label>
+            <input type="radio" name="patternSize" value="96" />
+            <span>96 × 96</span>
+          </label>
+
+          <label>
+            <input type="radio" name="patternSize" value="128" />
+            <span>128 × 128</span>
+          </label>
+        </div>
+
+        <button id="generateBtn" class="primary-btn" disabled>
+          确认生成图纸
+        </button>
+
+        <div id="actionPanel" class="action-panel hidden">
+          <button id="viewBtn" class="secondary-btn">在线查看图纸</button>
+
+          <div class="download-row">
+            <select id="downloadFormat" aria-label="选择下载格式">
+              <option value="png">PNG 图片</option>
+              <option value="pdf">PDF 文件</option>
+            </select>
+
+            <button id="downloadBtn" class="secondary-btn">下载图纸</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="viewerSection" class="panel viewer-section hidden">
+      <div class="viewer-header">
+        <div>
+          <h3>在线查看图纸</h3>
+          <p>支持缩放、翻转、显示网格和色号。悬停格子可查看颜色名。</p>
+        </div>
+
+        <div class="toolbar">
+          <button id="zoomOutBtn">−</button>
+          <button id="zoomResetBtn">100%</button>
+          <button id="zoomInBtn">+</button>
+          <button id="flipBtn">翻转</button>
+
+          <label class="toggle">
+            <input id="gridToggle" type="checkbox" checked />
+            <span>网格</span>
+          </label>
+
+          <label class="toggle">
+            <input id="codeToggle" type="checkbox" checked />
+            <span>色号</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="viewer-layout">
+        <div class="canvas-scroller">
+          <canvas id="patternCanvas"></canvas>
+        </div>
+
+        <aside class="color-sidebar">
+          <h4>颜色统计</h4>
+          <div id="colorList" class="color-list"></div>
+        </aside>
+      </div>
+
+      <div id="tooltip" class="tooltip hidden"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Made for vibe coding interviews · Pure HTML/CSS/JavaScript · GitHub Pages Ready</p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
