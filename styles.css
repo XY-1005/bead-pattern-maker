@@ -275,7 +275,6 @@ button {
 #previewCanvas {
   max-width: 100%;
   max-height: 420px;
-  display: none;
   border-radius: 18px;
   box-shadow: 0 18px 50px rgba(20, 44, 84, 0.13);
 }
