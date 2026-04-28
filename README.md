@@ -139,7 +139,7 @@ No framework, no backend, no database.
 
 ```text
 bead-pattern-maker/
-├── index.html
-├── styles.css
+├── README.md
 ├── app.js
-└── README.md
+├── index.html
+└── styles.css
